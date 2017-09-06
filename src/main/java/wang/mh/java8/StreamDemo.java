@@ -23,7 +23,7 @@ public class StreamDemo {
                 .stream()
                 .parallel()
                 .map( task -> task.getPoints() ) // or map( Task::getPoints )
-                .reduce( 0, Integer::sum );
+                .reduce( 2, Integer::sum );
 
         System.out.println( "Total points (all tasks): " + totalPoints );
 
