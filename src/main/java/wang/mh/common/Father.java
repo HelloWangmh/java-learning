@@ -17,6 +17,11 @@ public class Father {
        this.age = age;
     }
 
+    public Father(String name, Integer age) {
+        this.name = name;
+        this.age = age;
+    }
+
     public Father(){
 
     }

@@ -1,5 +1,9 @@
 package wang.mh.java8;
 
+import com.google.common.collect.Lists;
+
+import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -55,4 +59,25 @@ class TestFunctionalInterface{
  interface MyFunctionalInterface{
     void method();
     //void method2();
+}
+
+class LambdaTimerDemo{
+    public static void main(String[] args) {
+        Timer t = new Timer(1000, event -> System.out.println(event.getClass()));
+        t.start();
+        JOptionPane.showMessageDialog(null,"Quite");
+    }
+}
+class LambdaPredicateDemo{
+    public static void main(String[] args) {
+        ArrayList<Integer> list = Lists.newArrayList();
+
+        list.add(1);
+        list.add(2);
+        list.add(3);
+
+        list.removeIf( i -> i ==1);
+
+        list.forEach(i -> System.out.println(i));
+    }
 }
