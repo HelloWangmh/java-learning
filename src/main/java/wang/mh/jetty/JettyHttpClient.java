@@ -12,6 +12,8 @@ public class JettyHttpClient {
         SslContextFactory sslContextFactory = new SslContextFactory();
         httpClient = new HttpClient(sslContextFactory);
         try {
+            httpClient.setFollowRedirects(false);
+
             httpClient.start();
         } catch (Exception e) {
             throw new RuntimeException("httpClient初始化失败");

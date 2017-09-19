@@ -1,34 +1,79 @@
 package wang.mh.jetty;
 
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
+import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.client.api.Response;
 import org.eclipse.jetty.client.api.Result;
+import org.eclipse.jetty.client.util.BufferingResponseListener;
+import org.eclipse.jetty.client.util.FutureResponseListener;
 import org.eclipse.jetty.http.HttpMethod;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+@Slf4j
 public class JettpHttpClientDemo {
 
     public static void main(String[] args) throws Exception {
-        testAsync();
+        testAsyncWithBufferingResponseListener();
+    }
+
+    /**
+     *通过BufferingResponseListener
+     */
+    public static void testAsyncWithBufferingResponseListener()  throws Exception{
+        Request req = JettyHttpClient.httpClient.newRequest("http://localhost:8080/testAsync");
+
+        req.send(new BufferingResponseListener() {
+            @Override
+            public void onComplete(Result result) {
+                if(result.isSucceeded()){
+                    String resultData = new String(getContent());
+                    log.info("result:{},耗时:{}毫秒",resultData);
+                }
+            }
+        });
     }
 
 
+
+
+    /**
+     * 通过FutureResponseListener监听响应      程序可以继续执行
+     * @throws Exception
+     */
+    public static void testAsyncWithListener()  throws Exception{
+        Request req = JettyHttpClient.httpClient.newRequest("http://localhost:8080/testAsync");
+
+        FutureResponseListener listener = new FutureResponseListener(req);
+        req.send(listener);
+        System.out.println("异步请求完成");
+
+        ContentResponse getResutl = JettyHttpClient.httpClient.GET("http://www.eclipse.org/jetty/documentation/current/http-client.html");
+        System.out.println(getResutl.getContentAsString());
+
+        long start = System.currentTimeMillis();
+        String resuslt = listener.get().getContentAsString();
+       log.info("result:{},耗时:{}毫秒",resuslt,(System.currentTimeMillis()-start));
+    }
+
+    /**
+     * 第一个请求耗时很久才返回  那么第二个请求会等待
+     * @throws Exception
+     */
     public static void testAsync()  throws Exception{
-        JettyHttpClient.httpClient.newRequest("http://localhost:8080/testAsync")
-                .send((Result result) -> {
-                    Response response = result.getResponse();
-                    result.getResponse().getListeners(Response.ResponseListener.class).get(0);
-                });
-        System.out.println("请求完成");
+        Request req = JettyHttpClient.httpClient.newRequest("http://localhost:8080/testAsync");
+        long start = System.currentTimeMillis();
+        String resuslt = req.send().getContentAsString();
+        log.info("result:{},耗时:{}毫秒",resuslt,(System.currentTimeMillis()-start));
     }
 
     public static void testTimeOut() throws InterruptedException, ExecutionException, TimeoutException {
         String result = JettyHttpClient.httpClient.newRequest("http://localhost:8080/testAsync")
-                .timeout(3, TimeUnit.SECONDS).send().getContentAsString();
+                .timeout(2,TimeUnit.SECONDS).send().getContentAsString();
         System.out.println(result);
     }
 
