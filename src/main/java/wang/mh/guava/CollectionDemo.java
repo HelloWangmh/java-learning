@@ -14,6 +14,6 @@ public class CollectionDemo {
         list.add(2);
         Collection<Integer> filter = Collections2.filter(list, input -> input !=null && input == 1);
         filter.forEach(integer -> System.out.println(integer));
-        list.forEach(integer -> System.out.println(integer));
+        list.forEach(i -> System.out.println(i));
     }
 }
