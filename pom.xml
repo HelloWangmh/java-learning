@@ -60,6 +60,13 @@
          <artifactId>jetty-client</artifactId>
          <version>9.4.6.v20170531</version>
       </dependency>
+
+      <!--xstream-->
+      <dependency>
+         <groupId>com.thoughtworks.xstream</groupId>
+         <artifactId>xstream</artifactId>
+         <version>1.4.10</version>
+      </dependency>
    </dependencies>
 
 </project>
