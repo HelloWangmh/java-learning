@@ -5,12 +5,19 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by 明辉 on 2017/6/26.
  */
 public class StreamDemo {
     public static void main(String[] args) {
+
+        //数组转流
+        Integer[] arr = new Integer[]{1,2,3};
+        Stream<Integer> streamArr = Stream.of(arr);
+        Stream<Integer> streamArr2 = Arrays.stream(arr);
+
         List<Task> tasks = Arrays.asList(new Task(Status.OPEN, 5), new Task(Status.CLOSED, 9),
                 new Task(Status.CLOSED, 11));
         int sum = tasks.stream()
@@ -18,7 +25,7 @@ public class StreamDemo {
                 .mapToInt(Task::getPoints).sum();
         System.out.println(sum);
 
-        //并行处理
+        //并行处理   多个cpu
         final double totalPoints = tasks
                 .stream()
                 .parallel()
@@ -47,6 +54,11 @@ public class StreamDemo {
 
         System.out.println( result );
     }
+
+    //
+
+
+
 
     private enum Status {
         OPEN, CLOSED

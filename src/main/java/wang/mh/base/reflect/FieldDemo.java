@@ -2,6 +2,7 @@ package wang.mh.base.reflect;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,8 +28,7 @@ public class FieldDemo {
         }
     }
 }
-@Setter
-@Getter
+@Data
 class MyField{
     private Integer age;
 
