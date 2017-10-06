@@ -12,11 +12,9 @@ import java.util.stream.Collectors;
  */
 public class Main {
     public static void main(String[] args) throws IOException {
-
-        ArrayList<Integer> list = Lists.newArrayList();
-        List<Integer> collect = list.stream().collect(Collectors.toList());
-        System.out.println(collect.size());
+        assert  1==2;
     }
+
 
 
 }
