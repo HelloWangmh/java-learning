@@ -12,7 +12,8 @@ import java.util.stream.Collectors;
  */
 public class Main {
     public static void main(String[] args) throws IOException {
-        assert  1==2;
+        System.out.printf("%s:%d:%s%n","helo",1,"test");
+        System.out.printf("%s:%d:%s%n","helo",1,"test");
     }
 
 
