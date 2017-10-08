@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class QueueSearchFile {
@@ -18,6 +19,8 @@ public class QueueSearchFile {
     private static AtomicInteger count = new AtomicInteger();
 
     private static volatile Boolean isDone = false;
+
+    private static CountDownLatch countDownLatch = new CountDownLatch(Search_Threads);
 
 
     public static void main(String[] args) {
@@ -43,26 +46,28 @@ public class QueueSearchFile {
             for (int i = 0; i < Search_Threads; i++) {
                 new Thread(() -> {
                     boolean done = false;
-                    while (!isDone){
+                    while (!done){
                         try {
                             File file = queue.take();
                             if(file == DUMMY){
                                 //读到最后一个了
                                 queue.put(DUMMY);
                                // System.out.println("total file Number:" + count);
-                                isDone = true;
+                                done = true;
                             }else search(file,keyWord);
                         } catch (InterruptedException | FileNotFoundException e) {
                             e.printStackTrace();
                         }
                     }
-
+                    countDownLatch.countDown();
 
                 }).start();
             }
 
-            while (Thread.activeCount()>1){
-
+            try {
+                countDownLatch.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
             long end = System.currentTimeMillis();
