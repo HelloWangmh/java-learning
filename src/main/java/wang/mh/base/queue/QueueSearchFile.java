@@ -7,7 +7,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
-
+//10058  17207
 public class QueueSearchFile {
 
 
@@ -52,7 +52,7 @@ public class QueueSearchFile {
                             if(file == DUMMY){
                                 //读到最后一个了
                                 queue.put(DUMMY);
-                               // System.out.println("total file Number:" + count);
+                                // System.out.println("total file Number:" + count);
                                 done = true;
                             }else search(file,keyWord);
                         } catch (InterruptedException | FileNotFoundException e) {
