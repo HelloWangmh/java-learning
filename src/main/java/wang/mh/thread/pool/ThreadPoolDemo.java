@@ -1,13 +1,24 @@
 package wang.mh.thread.pool;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 public class ThreadPoolDemo {
     public static void main(String[] args) {
-        testSingleThreadPool();
+        testSchedulePool();
 
+    }
+
+
+    /**
+     * Schedule ThreadPool
+     */
+
+    public static void testSchedulePool(){
+        ScheduledExecutorService service = Executors.newScheduledThreadPool(5);
+        service.schedule(()-> System.out.println("running"),2, TimeUnit.SECONDS);
+
+        service.scheduleAtFixedRate(()-> System.out.println("runrun every 1 second")
+        ,1,2,TimeUnit.SECONDS);
     }
 
     /**
