@@ -12,8 +12,13 @@ import java.util.stream.Collectors;
  */
 public class Main {
     public static void main(String[] args) throws IOException {
-        System.out.printf("%s:%d:%s%n","helo",1,"test");
-        System.out.printf("%s:%d:%s%n","helo",1,"test");
+        File file = new File("/Users/wmh/mine/IdeaProjects/test");
+        System.out.println(file.exists());
+        System.out.println(file.listFiles());
+        File[] files = file.listFiles();
+        for (File file1 : files) {
+            System.out.println(file1.exists());
+        }
     }
 
 
