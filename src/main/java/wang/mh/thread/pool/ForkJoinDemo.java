@@ -24,7 +24,7 @@ public class ForkJoinDemo {
         System.out.println(counter.join());
         long end = System.currentTimeMillis();
         System.out.println("耗时:"+(end-start)); //16809
-        System.out.println(singleThread(numbers,x -> x>0.5));//67147
+        //System.out.println(singleThread(numbers,x -> x>0.5));//67147
 
 
 
