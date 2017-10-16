@@ -17,7 +17,7 @@ public class ConstructorDemo {
     public static void main(String[] args) {
         List<Integer> list = Arrays.asList(1, 2, 3);
         Stream<Father> stream = list.stream().map(Father::new);
-       /* List<Father> fathers = stream.collect(Collectors.toList());
+       /* List<Father> fathers = stream_core_java.collect(Collectors.toList());
         fathers.forEach((f)-> System.out.println(f.getAge()));*/
         Father[] fathers1 = stream.toArray(Father[]::new);
         for (Father father : fathers1) {
