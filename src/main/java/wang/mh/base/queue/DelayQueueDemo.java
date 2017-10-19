@@ -1,8 +1,7 @@
-package wang.mh.thread.queue;
+package wang.mh.base.queue;
 
 import lombok.Data;
 
-import java.util.Random;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;

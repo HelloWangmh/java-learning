@@ -7,14 +7,18 @@ import java.util.ArrayList;
  */
 public class Demo01 {
     public static void main(String[] args) {
-        Person<String> p = new Person("",new ArrayList());
+        Person<String> p = new Person(new ArrayList(),"123");
 
 
         //编译可以通过 但是执行下面语句报错
         //java.lang.ClassCastException: java.util.ArrayList cannot be cast to java.lang.String
+        System.out.println(p.getT1());
+
         System.out.println(p.getT2());
 
-     }
+
+
+    }
 
 }
 
@@ -23,7 +27,10 @@ class Person<T>{
     private T t2;
 
 
-    public Person(T t1,T t2){
+    public Person() {
+    }
+
+    public Person(T t1, T t2){
         this.t1 = t1;
         this.t2 = t2;
     }

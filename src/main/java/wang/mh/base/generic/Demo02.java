@@ -11,11 +11,12 @@ public class Demo02 {
 
     public static void main(String[] args) {
         //指定类型
-        String abc = ArrayAlg.<String>getMiddle("", "123", "abc");
+        String abc = ArrayAlg.getMiddle("", "123", "abc");
         //不指定   同类型
         String abc1 = ArrayAlg.getMiddle("", "123", "abc");
         //不指定   不同类型  寻找共同的父类或接口
         Serializable middle = ArrayAlg.getMiddle(1,  new ArrayList(), 5);
+        System.out.println(middle);
 
     }
 }

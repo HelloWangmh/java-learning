@@ -1,9 +1,10 @@
 package wang.mh.base.collection;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import org.junit.Assert;
+
+import java.util.*;
 
 /**
  * Created by 明辉 on 2017/6/14.
@@ -12,6 +13,68 @@ import java.util.Set;
 public class HashMapDemo {
 
     public static void main(String[] args) {
+        testWeakMap();
+
+
+
+    }
+
+    /**
+     * WeakHashMap   当key不存在别的引用的时候,垃圾回收器会自动删除map中对应的条目
+     */
+    private static void   testWeakMap(){
+        Map<Person,String> weakMap = new WeakHashMap<>();
+        Person p = new Person("wmh");
+
+        weakMap.put(p,"wmh");
+        p = null;
+        //通知垃圾回收器
+        System.gc();
+
+        try {
+            //等待垃圾回收器去工作
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("size:"+weakMap.size());
+
+    }
+
+    private static void testEntrySet(){
+
+        HashMap<String, Integer> map = Maps.newHashMap();
+        map.put("wang",1);
+        map.put("ming",2);
+        map.put("hui",3);
+
+        Set<Map.Entry<String, Integer>> entries = map.entrySet();
+
+        Iterator<Map.Entry<String, Integer>> iterator = entries.iterator();
+        Map.Entry<String, Integer> next = iterator.next();
+        entries.remove(next);
+        //UnsupportedOperationException    可以删除,但是不能添加元素
+        entries.add(next);
+        System.out.println("size:"+map.size());
+
+    }
+
+
+
+
+    /**
+     * getOrDefault
+     */
+    private static void testGetOrDefault(){
+        HashMap<String, Integer> map = Maps.newHashMap();
+
+       map.put("data",map.getOrDefault("data",2)+1);
+        System.out.println(map.get("data"));
+    }
+
+
+    private static void testSetAndMap(){
         Map<Person,Integer> map = new HashMap<Person, Integer>();
         Person p1 = new Person("11");
         Person p2 = new Person("11");
@@ -35,6 +98,7 @@ public class HashMapDemo {
         for (Person person : set) {
             System.out.println(person.getName());
         }
+
     }
 }
 class Person{

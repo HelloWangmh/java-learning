@@ -1,4 +1,4 @@
-package wang.mh.thread.queue;
+package wang.mh.base.queue;
 
 import java.util.Iterator;
 import java.util.Random;

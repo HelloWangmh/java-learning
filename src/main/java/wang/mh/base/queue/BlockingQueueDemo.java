@@ -1,9 +1,8 @@
-package wang.mh.thread.queue;
+package wang.mh.base.queue;
 
 import org.junit.Test;
 
 import java.util.concurrent.*;
-import java.util.stream.Stream;
 
 /**
  * Created by 明辉 on 2017/7/2.

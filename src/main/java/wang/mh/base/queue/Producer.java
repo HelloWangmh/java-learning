@@ -1,4 +1,4 @@
-package wang.mh.thread.queue;
+package wang.mh.base.queue;
 
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
