@@ -1,5 +1,7 @@
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.Getter;
+import lombok.Setter;
 import wang.mh.tool.CacheKey;
 import wang.mh.tool.Constants;
 
@@ -13,15 +15,10 @@ import java.util.stream.Collectors;
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        ArrayList<Integer> list = Lists.newArrayList();
-        List<Integer> collect = list.stream().collect(Collectors.toList());
-        System.out.println(collect.size());
+
+
     }
 
 
 }
-class  User{
-    public int age;
 
-
-}
