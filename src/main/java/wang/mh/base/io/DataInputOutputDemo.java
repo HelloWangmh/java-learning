@@ -1,9 +1,5 @@
 package wang.mh.base.io;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import java.io.*;
 
@@ -47,21 +43,7 @@ public class DataInputOutputDemo {
 }
 
 
-@Getter
-@Setter
-@AllArgsConstructor
-@ToString
-class User{
 
-    private String name;
-    private Integer age;
-    private double money;
-
-    public static final int NAME_SIZE = 20;
-    //num of byte
-    public static final int TOTAL_SIZE = 2 * NAME_SIZE + 4 + 8;
-
-}
 
 class DataIo{
 
