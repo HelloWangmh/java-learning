@@ -4,7 +4,9 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URLEncoder;
 import java.nio.channels.SocketChannel;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -13,7 +15,8 @@ import java.util.Scanner;
 public class ServerSocketDemo {
 
     public static void main(String[] args) throws IOException {
-        testInterruptServer();
+        System.out.println(URLEncoder.encode(",", "UTF-8"));
+
     }
 
 
