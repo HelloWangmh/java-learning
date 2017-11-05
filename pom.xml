@@ -68,6 +68,12 @@
          <artifactId>xstream</artifactId>
          <version>1.4.10</version>
       </dependency>
+      <!--java mail-->
+      <dependency>
+         <groupId>com.sun.mail</groupId>
+         <artifactId>javax.mail</artifactId>
+         <version>1.6.0</version>
+      </dependency>
    </dependencies>
 
 </project>

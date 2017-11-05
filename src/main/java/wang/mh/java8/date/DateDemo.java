@@ -1,20 +1,104 @@
-package wang.mh.java8;
+package wang.mh.java8.date;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Set;
 
 /**
  * java8 的时间处理
+ * Instant.now()  标准时间
  */
 public class DateDemo {
-    public static void main(String[] args) {
-        System.out.println(LocalDate.now().toString());
-        System.out.println(LocalDate.now().plusDays(30).toString());
+    public static void main(String[] args) throws InterruptedException {
+        testConvert();
+
+    }
+
+    /**
+     * 新旧 date api 转换
+     */
+    public static void testConvert(){
+        Date date = new Date();
+        //这个是标准时间 子午线
+        Instant instant = date.toInstant();
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        System.out.println(localDateTime);
+    }
+
+
+    /**
+     * DateFormatter
+     */
+    public static void testFormatter(){
+        LocalDateTime now = LocalDateTime.now();
+        //1 Predefined standard
+        System.out.println(DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(now));
+        //2 Local-specific
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL);
+        //默认系统local
+        System.out.println(formatter.format(now));
+        System.out.println(formatter.withLocale(Locale.ENGLISH).format(now));
+        //3 customer patterns
+        formatter = DateTimeFormatter.ofPattern("E yyyyMMdd");
+        System.out.println(formatter.format(now));
+        formatter = DateTimeFormatter.ofPattern("E yyyyMMMdd", Locale.ENGLISH);
+        System.out.println(formatter.format(now));
+    }
+
+
+    /**
+     * 带有时区的时间
+     */
+    public static void testZoneId(){
+        ZonedDateTime time = ZonedDateTime.of(LocalDate.now(), LocalTime.now(), ZoneId.systemDefault());
+        System.out.println(time);
+    }
+
+
+    public static void testDateAdjuster(){
+        LocalDate firstTuesday = LocalDate.of(2016, 10, 5).with(
+                TemporalAdjusters.nextOrSame(DayOfWeek.TUESDAY));
+        System.out.println(firstTuesday);
+
+        TemporalAdjuster myOwnTemporalAdjuster = x -> {
+            LocalDate date = (LocalDate) x;
+            do
+            {
+                date = date.plusDays(1);
+            }while (date.getDayOfWeek().getValue() <= 6);
+            return date;
+        };
+
+        System.out.println(LocalDate.of(2016,10, 31).with(myOwnTemporalAdjuster));
+
+    }
+
+
+    /**
+     * 时间的比较
+     * Duration,Instant
+     * @throws InterruptedException
+     */
+    public static void testDuration() throws InterruptedException {
+        Instant start = Instant.now();
+        Thread.sleep(2000);
+        Instant end = Instant.now();
+        Duration timeElapsed = Duration.between(start, end);
+        //多个方法用来进行比较,计算
+        System.out.println(timeElapsed.toMillis());
+
+
+        LocalDate startDate = LocalDate.of(2016, 10, 1);
+        LocalDate endDate = LocalDate.now();
+        //Period
+        System.out.println(endDate.until(startDate).getDays());
+
+
     }
 
     /**
