@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.*;
 import java.util.function.DoublePredicate;
 
@@ -21,9 +22,9 @@ public class MineForkJoin {
         for (int i = 0; i < SIZE; i++) {
             numbers[i] = Math.random();
         }
-        BlockingQueue<Callable<Integer>> queue = new ArrayBlockingQueue<Callable<Integer>>(10);
+        BlockingQueue<Callable<Integer>> queue = new ArrayBlockingQueue<>(10);
         ComputeSum computeSum = new ComputeSum(numbers,d -> d > 0.5,queue);
-
+        long start = System.currentTimeMillis();
         new Thread(()->{
             try {
                 computeSum.assignQueue(0,SIZE);
@@ -32,17 +33,26 @@ public class MineForkJoin {
             }
         }).start();
 
-        ExecutorService service = Executors.newFixedThreadPool(10);
-        ArrayList<Future<Integer>> result = Lists.newArrayList();
+        ExecutorService service = Executors.newFixedThreadPool(20);
+        List<Future<Integer>> result = Lists.newCopyOnWriteArrayList();
         while (!queue.isEmpty()){
             Future<Integer> future = service.submit(queue.take());
             result.add(future);
         }
         int sum = 0;
-        for (Future<Integer> future : result) {
-            sum +=future.get();
+
+        while (result.size() > 0) {
+            for (Future<Integer> future : result) {
+                if(future.isDone()){
+                    sum +=future.get();
+                    result.remove(future);
+                }
+            }
         }
-        System.out.println(sum);
+
+        long end = System.currentTimeMillis();
+        System.out.println(sum + ",耗时 : " + (end - start) + "ms");
+        service.shutdown();
     }
 
 

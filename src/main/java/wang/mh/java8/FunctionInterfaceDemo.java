@@ -1,6 +1,5 @@
 package wang.mh.java8;
 
-import javafx.scene.Parent;
 import wang.mh.common.Father;
 
 import java.util.function.Consumer;
