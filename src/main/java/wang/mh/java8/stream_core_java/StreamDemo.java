@@ -10,9 +10,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.DoublePredicate;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -20,17 +22,108 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+/**
+ * 如果返回Stream 那么是惰性求值,不会真正的执行
+ * 使用为基本类型定制的Lambda表达式和Stream,如IntStream可以显著提升系统性能
+ */
 public class StreamDemo {
 
     public static void main(String[] args) throws  Exception {
-        testParallel();
+
+    }
+
+    private static void testArr(){
+
+        int[] arr = new int[5];
+        //根据数组下标计算值
+        Arrays.parallelSetAll(arr, i -> i+2);
+        System.out.println(Arrays.toString(arr));
+    }
+
+    /**
+     * 测试LinkedList  和ArrayList  分割list时候的性能
+     */
+    private static void testListPerformance(){
+        int size = 10000000;
+        int part = 1000000;
+        LinkedList<Double> linkedList = Stream.generate(Math::random).limit(size)
+                .collect(Collectors.toCollection(LinkedList::new));
+        ArrayList<Double> arrayList = Stream.generate(Math::random).limit(size)
+                .collect(Collectors.toCollection(ArrayList::new));
+        for (int j = 0; j < 5; j++) {
+            double r1 = 0.0;
+            double r2 = 0.0;
+            long s1 = System.currentTimeMillis();
+            for (int i = 0; i < 10; i++) {
+                List<Double> temp = linkedList.subList(i * part, (i + 1) * part);
+                r1 += temp.stream().reduce((acc,e) -> acc + e).get();
+            }
+            long s2 = System.currentTimeMillis();
+            System.out.println("LinkedList : result : " + r1  + " time : " + (s2 - s1) + " ms");
+            for (int i = 0; i < 10; i++) {
+                List<Double> temp = arrayList.subList(i * part, (i + 1) * part);
+                r2 += temp.stream().reduce((acc,e) -> acc + e).get();
+            }
+            long s3 = System.currentTimeMillis();
+            System.out.println("ArrayList : result : " + r2  + " time : " + (s3 - s2) + " ms");
+        }
+    }
+
+
+    /**
+     *reduce的重载方法
+     */
+    private static <I,O> List<O> testMapUsingReduce(Stream<I> stream,Function<I,O> mapper) throws ExecutionException, InterruptedException {
+        final ForkJoinPool pool = new ForkJoinPool(2);
+        AtomicInteger n = new AtomicInteger();
+        List<O> result = pool.submit(() -> {
+            return stream.parallel().reduce(new CopyOnWriteArrayList<>(), (List<O> acc, I x) -> {
+                //acc.add(mapper.apply(x));   wrong  ?????TODO
+                List<O> newAcc = new ArrayList<>(acc);
+                newAcc.add(mapper.apply(x));
+                return newAcc;
+            }, (left, right) -> {
+                //并行操作时候才会走这里
+                n.incrementAndGet();
+                right.addAll(left);
+                return right;
+            });
+        }).get();
+
+        System.out.println(result.size());
+        System.out.println(n);
+        return result;
+    }
+
+    /**
+     * reduce  一组值中生成一个值
+     */
+    private static void testReduce(){
+        Double result = getList(5).stream().reduce(100.0, (s, d) -> {
+            System.out.println(s + "===" +d);
+            return s + d;
+        });
+        System.out.println(result);
+    }
+
+    /**
+     * flatMap方法可用Stream替换值，然后将多个Stream连接成一个Stream.
+     */
+    private static void testFlatMap(){
+        List<List<Double>> list = Stream.of(getList(5), getList(5)).collect(Collectors.toList());
+        System.out.println(list.size());
+
+
+        List<Double> flatList = Stream.of(getList(5), getList(5)).flatMap(numbers -> numbers.stream())
+                .collect(Collectors.toList());
+        System.out.println(flatList.size());
     }
 
 
     /**
      *thread safe  about parallelStream
      */
-    public static void testParallel(){
+    private static void testParallel(){
         int[] arrInt = new int[10];
         getStream().parallel().forEach(s -> {
             if (s.length() < 10) {
@@ -45,13 +138,9 @@ public class StreamDemo {
             }
         });
         System.out.println("maybe not same as last arrInt : " + Arrays.toString(arrInt));
-
-
         Map<Integer, List<String>> lenToList = getStream().parallel()
                                                .collect(Collectors.groupingByConcurrent(String::length));
-
         System.out.println(lenToList.get(3));
-
 
         lenToList = getStream().parallel()
                 .collect(Collectors.groupingByConcurrent(String::length));
@@ -63,7 +152,7 @@ public class StreamDemo {
     /**
      *PrimitiveStream
      */
-    public static void testPrimitiveStream(){
+    private static void testPrimitiveStream(){
         IntStream stream = IntStream.rangeClosed(0, 10);
         System.out.println(stream.sum());
 
@@ -76,7 +165,7 @@ public class StreamDemo {
     /**
      * partition   分割成两个list  true/false
      */
-    public static void testPartition(){
+    private static void testPartition(){
         Map<Boolean, List<Locale>> partitionMap = Stream.of(Locale.getAvailableLocales())
                 .collect(Collectors.partitioningBy(l -> l.getCountry().equals("US")));
         System.out.println("true : " + partitionMap.get(true));
@@ -87,7 +176,7 @@ public class StreamDemo {
     /**
      * group
      */
-    public static  void  testGroup(){
+    private static  void  testGroup(){
         Map<String, Set<Locale>> groupMap = Stream.of(Locale.getAvailableLocales())
                 .collect(Collectors.groupingBy(Locale::getCountry, Collectors.toSet()));
         System.out.println(groupMap);
@@ -97,7 +186,7 @@ public class StreamDemo {
     /**
      *生成map   有直接对象的concurrent map方法
      */
-    public static void testMap(){
+    private static void testMap(){
 
         //若存在相同的key  throw  IllegalStateException
 //        Map<Integer, String> idToName = getPerson().collect(Collectors.toMap(Person::getId,
@@ -138,6 +227,7 @@ public class StreamDemo {
         //另外一种实现方式 通过groupBy  mapping
         locales = Stream.of(Locale.getAvailableLocales());
         Map<String, Set<String>> setMap2 = locales.collect(Collectors.groupingBy(Locale::getDisplayCountry,
+                //下游收集器
                 Collectors.mapping(Locale::getDisplayLanguage, Collectors.toSet())));
         System.out.println("setMap2 : " + setMap2);
 
@@ -147,7 +237,7 @@ public class StreamDemo {
     /**
      *collect()
      */
-    public static void testCollection(){
+    private static void testCollection(){
 
         //list
         List<String> list = getStream().collect(Collectors.toList());
@@ -179,7 +269,7 @@ public class StreamDemo {
     /**
      * safe return type   Optional
      */
-    public static void testOption(){
+    private static void testOption(){
         Stream<Integer> stream = Stream.of(1, 2, 3, 4);
 
         //orElse
@@ -222,7 +312,7 @@ public class StreamDemo {
      * 多种获取stram的方式
      * @throws Exception
      */
-    public static void testCreateStream() throws Exception{
+    private static void testCreateStream() throws Exception{
         Path path = Paths.get("/Users/wmh/mine/IdeaProjects/mine/java-learning/src/main/resources/streamWord");
         String content = new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
         //Stream.of  接受数组
@@ -248,17 +338,12 @@ public class StreamDemo {
 
     }
 
-
-
-
-
-
     /**
      * parallelStream是并行计算,通过自身的ForkJoinPool,默认线程数是cpu核数(main线程包含在内)
      * 可以通过-Djava.util.concurrent.ForkJoinPool.common.parallelism=16  更改
      * 或 通过自己定义的ForkJoinPool
      */
-    public static void testPatallelCount() throws ExecutionException, InterruptedException {
+    private static void testPatallelCount() throws ExecutionException, InterruptedException {
         DoublePredicate predicate = d -> {
             try {
                 Thread.sleep(1000);

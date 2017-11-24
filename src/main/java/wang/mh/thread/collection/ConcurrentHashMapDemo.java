@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.LongAdder;
 public class ConcurrentHashMapDemo {
 
     public static void main(String[] args) {
-
+        testReduce();
     }
 
 
@@ -143,7 +143,7 @@ public class ConcurrentHashMapDemo {
 
 
     /**
-     * ConcurrentHashMap的refuce
+     * ConcurrentHashMap的reduce
      */
     public static void testReduce(){
         ConcurrentHashMap<String,Integer> map = new ConcurrentHashMap<>();
