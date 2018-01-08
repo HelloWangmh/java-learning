@@ -3,6 +3,7 @@ package wang.mh.thread.collection;
 import com.google.common.collect.Maps;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
@@ -13,7 +14,27 @@ import java.util.concurrent.atomic.LongAdder;
  */
 public class ConcurrentHashMapDemo {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+        HashMapInMutiThread();
+    }
+
+
+    /**
+     * 多线程环境下HashMap可能造成死循环
+     */
+    private static void HashMapInMutiThread() throws InterruptedException {
+        Map<Integer, String> map = new HashMap<>();
+        Thread t = new Thread(() -> {
+            for (int i = 0; i < 100000; i++) {
+                int k = i;
+                new Thread(() -> {
+                    map.put(k, "");
+                }, String.valueOf(i)).start();
+            }
+        });
+        t.start();
+        t.join();
+        System.out.println(map.size());
 
     }
 

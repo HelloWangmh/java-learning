@@ -9,7 +9,7 @@ import java.util.concurrent.*;
 
 public class ThreadPoolDemo {
     public static void main(String[] args) throws Exception {
-        testCompletion();
+        testFuture();
 
     }
 
@@ -50,8 +50,8 @@ public class ThreadPoolDemo {
      */
     public static void testCompletion() throws Exception {
         ExecutorService service = Executors.newCachedThreadPool();
-        ExecutorCompletionService<Integer> completionService = new ExecutorCompletionService<Integer>(service);
-        ArrayList<Callable<Integer>> list = getListForInvoke();
+        ExecutorCompletionService<Integer> completionService = new ExecutorCompletionService<>(service);
+        List<Callable<Integer>> list = getListForInvoke();
         for (Callable<Integer> callable : list) {
             completionService.submit(callable);
         }
@@ -62,7 +62,7 @@ public class ThreadPoolDemo {
 
     }
 
-    private static ArrayList<Callable<Integer>> getListForInvoke(){
+    private static List<Callable<Integer>> getListForInvoke(){
         ArrayList<Callable<Integer>> list = Lists.newArrayList();
 
         for (int i = 0; i < 5; i++) {

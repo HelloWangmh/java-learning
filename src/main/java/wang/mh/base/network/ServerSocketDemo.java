@@ -15,7 +15,7 @@ import java.util.Scanner;
 public class ServerSocketDemo {
 
     public static void main(String[] args) throws IOException {
-        System.out.println(URLEncoder.encode(",", "UTF-8"));
+       testServet();
 
     }
 
