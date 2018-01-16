@@ -29,7 +29,7 @@ import java.util.stream.Stream;
 public class StreamDemo {
 
     public static void main(String[] args) throws  Exception {
-
+        testPeek();
     }
 
     private static void testArr(){
@@ -67,6 +67,18 @@ public class StreamDemo {
             long s3 = System.currentTimeMillis();
             System.out.println("ArrayList : result : " + r2  + " time : " + (s3 - s2) + " ms");
         }
+    }
+
+    /**
+     * peek() 可以查看每个流的值,并且继续对流操作
+     */
+    private static void testPeek(){
+        getStream().forEach((String s) -> {
+            System.out.println(s);
+        });
+
+        System.out.println("peek() ===========");
+        System.out.println( getStream().peek(System.out :: println).collect(Collectors.toList()));
     }
 
 
