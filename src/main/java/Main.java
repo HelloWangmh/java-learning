@@ -16,27 +16,6 @@ public class Main {
     private static Son son =  new Son();
 
     public static void main(String[] args) throws InterruptedException {
-        ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-        ReentrantReadWriteLock.ReadLock readLock = lock.readLock();
-        ReentrantReadWriteLock.WriteLock writeLock = lock.writeLock();
-        new Thread(() -> {
-            writeLock.lock();
-            try {
-                readLock.lock();
-                System.out.println("get read lock");
-                readLock.unlock();
-                TimeUnit.SECONDS.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            writeLock.unlock();
-        }).start();
-
-        while (true) {
-            TimeUnit.SECONDS.sleep(1);
-            System.out.println(lock.getQueueLength());;
-        }
-
 
     }
 
