@@ -164,7 +164,7 @@ public class ConcurrentHashMapDemo {
 
 
     /**
-     * ConcurrentHashMap的refuce
+     * ConcurrentHashMap的reduce
      */
     public static void testReduce(){
         ConcurrentHashMap<String,Integer> map = new ConcurrentHashMap<>();

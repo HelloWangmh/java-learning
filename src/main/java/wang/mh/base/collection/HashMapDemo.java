@@ -13,7 +13,7 @@ import java.util.*;
 public class HashMapDemo {
 
     public static void main(String[] args) {
-        testWeakMap();
+        testGetOrDefault();
 
 
 
@@ -64,13 +64,21 @@ public class HashMapDemo {
 
 
     /**
-     * getOrDefault
+     * getOrDefault   computeIfAbsent
      */
     private static void testGetOrDefault(){
-        HashMap<String, Integer> map = Maps.newHashMap();
 
-       map.put("data",map.getOrDefault("data",2)+1);
-        System.out.println(map.get("data"));
+        //getOrDefault
+        HashMap<String, String> map = Maps.newHashMap();
+        System.out.println("init map size : " + map.size());
+        System.out.println(map.getOrDefault("data", "100"));
+        System.out.println("after getOrDefault  map size : " + map.size());
+
+        //computeIfAbsent
+        map.clear();
+        System.out.println(map.computeIfAbsent("data", k -> k + "100"));
+        System.out.println("after computeIfAbsent  map size : " + map.size());
+
     }
 
 

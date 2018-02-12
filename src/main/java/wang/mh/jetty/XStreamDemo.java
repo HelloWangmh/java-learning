@@ -7,6 +7,8 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,8 @@ public class XStreamDemo {
 
         Child c1 = new Child("1");
         Child c2 = new Child("2");
+        Child c3 = new Child("3");
+
         ArrayList<Child> list = Lists.newArrayList(c1, c2);
 
         //解析这个类的注解
@@ -28,7 +32,6 @@ public class XStreamDemo {
         personXs.setList(list);
         String s = xStream.toXML(personXs);
         System.out.println(s);
-
         PersonXs personXs1 = (PersonXs) xStream.fromXML(s);
         System.out.println(personXs1);
     }
@@ -53,6 +56,8 @@ class PersonXs {
     @XStreamImplicit    //隐式集合   忽略这个<child>标签外层的 <list></list>
     private List<Child> list;
 
+
+
     public PersonXs(String name, Integer age,Long money) {
         this.name = name;
         this.age = age;
@@ -69,4 +74,11 @@ class Child {
     public Child(String sex) {
         this.sex = sex;
     }
+}
+
+@XStreamAlias("person")
+@Setter
+@Getter
+class OtherPerson {
+    private String color;
 }

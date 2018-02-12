@@ -1,20 +1,50 @@
 package wang.mh.base.io;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
+import com.google.common.collect.Lists;
+
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class PathsDemo {
 
     private static Path path = Paths.get("src/main/resources/num.properties");
 
     public static void main(String[] args) throws IOException {
-        testTravelsalDir();
+
+        List<String> origin = Lists.newArrayList();
+        for (int i = 0; i < 100000000; i++) {
+            origin.add(String.valueOf(i));
+        }
+        long s1 = System.currentTimeMillis();
+        Iterator<String> iterator = origin.iterator();
+        List<String> dest1 = Lists.newArrayList(iterator);
+        long s2 = System.currentTimeMillis();
+        System.out.println("cost time : " + (s2 - s1));
+        List<String> dist2 = Lists.newArrayListWithCapacity(100000000);
+        Iterator<String> iterator1 = origin.iterator();
+        while (iterator1.hasNext()) {
+            dist2.add(iterator1.next());
+        }
+        long s3 = System.currentTimeMillis();
+        System.out.println("cost time : " + (s3 - s2));
+
+       /* Path path = Paths.get("C:\\Users\\wmh\\Desktop\\data\\JTP\\download\\product\\RoomStock_ALL_20180112.zip");
+        ZipInputStream zipIn = new ZipInputStream(Files.newInputStream(path));
+        ZipEntry entry = zipIn.getNextEntry();
+        BufferedReader br = new BufferedReader(new InputStreamReader(zipIn));
+        System.out.println(br.lines().count());*/
     }
 
     /**

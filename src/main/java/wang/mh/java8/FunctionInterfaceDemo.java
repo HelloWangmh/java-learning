@@ -1,8 +1,8 @@
 package wang.mh.java8;
 
-import javafx.scene.Parent;
 import wang.mh.common.Father;
 
+import java.text.SimpleDateFormat;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -14,45 +14,51 @@ import java.util.function.Supplier;
  */
 public class FunctionInterfaceDemo {
     public static void main(String[] args) {
-        //Runnable
-        repeat(10,()-> System.out.println("hello world"));
+        check((i) -> i >0);
 
-        //Supplier<T>
-        Father father = get(() -> { return new Father();});
-        System.out.println(father);
+    }
 
-
-
-
-        //Consumer<T>  Predicate<Father>
-        //toConsume(Father::new,f1 -> f1.getAge() ==1 ,f1 -> f1.setAge(1));
-
-
-        //Function<T,U>
-        System.out.println(getFatherName((father1) -> father1.getName(),new Father("wmh",2)));
-
+    /**
+     * test 类型推断
+     */
+    static void check(IntPred predicate) {
+        System.out.println(predicate.test(10));
     }
 
 
 
-    public static void repeat(int n,Runnable runnable){
-        for (int i = 0;i<n;i++){
+    /**
+     * ThreadLocal java8 新增的工厂类方法
+     */
+    static void testThreadLocal() {
+        ThreadLocal<Father> threadLocal = ThreadLocal.withInitial(() -> new Father("wmh", 23));
+        System.out.println(threadLocal.get().getName());
+    }
+
+
+    static void repeat(int n, Runnable runnable) {
+        for (int i = 0; i < n; i++) {
             runnable.run();
         }
     }
 
-    public static Father get(Supplier<Father> supplier){
+    static Father get(Supplier<Father> supplier) {
         return supplier.get();
     }
 
-    public static void toConsume(Supplier<Father> supplier, Predicate<Father> predicate, Consumer<Father> consumer){
-        if(predicate.test(supplier.get())){
+    static void toConsume(Supplier<Father> supplier, Predicate<Father> predicate, Consumer<Father> consumer) {
+        if (predicate.test(supplier.get())) {
             consumer.accept(supplier.get());
         }
 
     }
 
-    public static String getFatherName(Function<Father,String> function,Father father){
+    static String getFatherName(Function<Father, String> function, Father father) {
         return function.apply(father);
     }
+}
+
+@FunctionalInterface
+interface IntPred {
+    boolean test(Integer value);
 }
