@@ -22,7 +22,6 @@ public class PathsDemo {
     private static Path path = Paths.get("src/main/resources/num.properties");
 
     public static void main(String[] args) throws IOException {
-
         List<String> origin = Lists.newArrayList();
         for (int i = 0; i < 100000000; i++) {
             origin.add(String.valueOf(i));
