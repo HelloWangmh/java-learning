@@ -2,12 +2,40 @@ package wang.mh.thread.artOfConcurrency;
 
 import com.google.common.collect.Lists;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+/**
+ * volatile : 1.保证此变量的可见性,修改后立即同步到主内存,使用前立即从主内存刷新
+ *      2.禁止指令重排序优化
+ */
 public class VolatileDemo {
 
+    private static int num = 0;
+
     public static void main(String[] args) throws InterruptedException {
-        ArrayList<Thread> list = Lists.newArrayList();
+        new Thread(() -> {
+            num++;
+            try {
+                TimeUnit.SECONDS.sleep(4);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println(num);
+        }).start();
+        TimeUnit.SECONDS.sleep(1);
+        new Thread(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println(num);
+        }).start();
+    }
+
+    public static void visibility() throws InterruptedException {
+       List<Thread> list = Lists.newArrayList();
         VolatileFeature volatileFeature = new VolatileFeature();
         for (int i = 0; i < 5; i++) {
             list.add(new Thread(() -> {
@@ -35,7 +63,7 @@ public class VolatileDemo {
  */
 class VolatileFeature{
 
-    private  long v = 0L; //等价将v声明为volatile,多线程环境下还是存在线程不安全
+    private long v = 0L; //等价将v声明为volatile,多线程环境下还是存在线程不安全
 
     public  synchronized void set(long value){
         this.v = value;
