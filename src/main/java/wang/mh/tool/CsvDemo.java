@@ -1,6 +1,5 @@
 package wang.mh.tool;
 
-import au.com.bytecode.opencsv.CSVReader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,8 +22,6 @@ public class CsvDemo {
         System.out.println("name : " + entry.getName());
         System.out.println("time : " + entry.getTime());
         InputStream in = zipFile.getInputStream(entry);
-        CSVReader reader = new CSVReader(new InputStreamReader(in), '\t');
-        reader.readAll().forEach(line -> System.out.println(Arrays.toString(line)));
-        reader.close();
+
     }
 }
