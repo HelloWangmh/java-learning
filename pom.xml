@@ -68,6 +68,18 @@
          <artifactId>xstream</artifactId>
          <version>1.4.10</version>
       </dependency>
+<<<<<<< HEAD
+      <!--java mail-->
+      <dependency>
+         <groupId>com.sun.mail</groupId>
+         <artifactId>javax.mail</artifactId>
+         <version>1.6.0</version>
+      </dependency>
+      <dependency>
+         <groupId>org.mockito</groupId>
+         <artifactId>mockito-core</artifactId>
+         <version>1.10.19</version>
+=======
       <dependency>
          <groupId>javax.mail</groupId>
          <artifactId>mail</artifactId>
@@ -78,6 +90,7 @@
          <groupId>net.sf.opencsv</groupId>
          <artifactId>opencsv</artifactId>
          <version>2.3</version>
+>>>>>>> 8124c6fa8738de6f139ede52b29b50d1e628e92a
       </dependency>
       <!--jsch-->
       <dependency>
