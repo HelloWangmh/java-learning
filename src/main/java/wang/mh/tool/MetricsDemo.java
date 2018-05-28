@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MetricsDemo {
     private static final MetricRegistry metrics = new MetricRegistry();
-    private static final Meter requests = metrics.meter("requests");
+//    private static final Meter requests = metrics.meter("requests");
 
     static {
         ConsoleReporter reporter = ConsoleReporter.forRegistry(metrics)
@@ -30,6 +30,6 @@ public class MetricsDemo {
     }
 
     public static void handleRequest() {
-        requests.mark();
+//        requests.mark();
     }
 }
