@@ -1,8 +1,6 @@
 package wang.mh.jvm;
 
 import com.google.common.collect.Lists;
-import org.mockito.cglib.proxy.Enhancer;
-import org.mockito.cglib.proxy.MethodInterceptor;
 import sun.misc.Unsafe;
 import wang.mh.base.io.User;
 
@@ -44,14 +42,14 @@ public class HeapOOM {
      * java8 已经移除了永久代,类的元数据放在native堆中,称作Metaspace
      */
     public static void javaMethodAreaOOM(){
-        while (true) {
+        /*while (true) {
             Enhancer enhancer = new Enhancer();
             enhancer.setSuperclass(User.class);
             enhancer.setUseCache(false);
             enhancer.setCallback((MethodInterceptor) (o, method, objects, methodProxy) ->
                     methodProxy.invokeSuper(o, objects));
             enhancer.create();
-        }
+        }*/
     }
 
     /**

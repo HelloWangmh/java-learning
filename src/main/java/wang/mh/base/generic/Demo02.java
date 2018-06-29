@@ -16,7 +16,7 @@ public class Demo02 {
         String abc1 = ArrayAlg.getMiddle("", "123", "abc");
         //不指定   不同类型  寻找共同的父类或接口
         Serializable middle = ArrayAlg.getMiddle(1,  new ArrayList(), 5);
-        System.out.println(middle);
+        System.out.println(middle.getClass());
 
     }
 }
