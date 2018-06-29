@@ -27,6 +27,7 @@ public class TestClass {
             return x;
         } finally {
             x = 3;
+            return x;
         }
     }
 }

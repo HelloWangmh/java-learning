@@ -32,17 +32,16 @@ public class SomeLimit {
         //Pair<String>[] table = new Pair<String>[10];
 //
 //        ArrayList<Pair<String>> list = Lists.newArrayList();
-//        addAll(list,new Pair<String>(),new Pair<String>());
-//
+//        addAll(list,new Pair<>(),new Pair<>());
+
 //        Pair<String>[] array = array(new Pair<String>(), new Pair<String>());
 //        Object[] obj = array;
-//        //不会发生异常 因为数组存储只检查擦除的类型  但是在处理的时候有可能有异常
+//        不会发生异常 因为数组存储只检查擦除的类型  但是在处理的时候有可能有异常
 //        obj[0] = new Pair<Employee>();
-
 
         /**
          * 不能实例化类型变量     不能使用new T(...),new T[...],T.class
-         * 因为这样会擦书为Object   无意义
+         * 因为这样会擦除为Object   无意义
          * 以下两种写法分别是通过java8的函数式接口和反射
          */
         //Pair.makePair(String::new);
@@ -53,7 +52,7 @@ public class SomeLimit {
          */
 
         //wrong
-        //minmax(new String());
+        //minAndMax(new String());
         //true
         IntFunction<String> i = Integer::toString;
 
