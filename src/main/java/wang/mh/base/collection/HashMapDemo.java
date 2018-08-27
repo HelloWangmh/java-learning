@@ -1,8 +1,6 @@
 package wang.mh.base.collection;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.junit.Assert;
 
 import java.util.*;
 
@@ -13,10 +11,11 @@ import java.util.*;
 public class HashMapDemo {
 
     public static void main(String[] args) {
-        testGetOrDefault();
-
-
-
+        Person[] arr = new Person[5];
+        Person a = arr[3];
+        arr[3] = new Person("123");
+        System.out.println(a);
+        System.out.println(arr[3]);
     }
 
     /**
