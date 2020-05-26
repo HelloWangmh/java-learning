@@ -1,8 +1,10 @@
 package wang.mh.thread;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
+
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by 明辉 on 2017/7/2.
@@ -10,22 +12,25 @@ import java.util.concurrent.Executors;
 public class ThreadPoolDemo {
 
     public static void main(String[] args) throws InterruptedException {
-        ExecutorService executorService = Executors.newFixedThreadPool(5);
-        executorService.shutdownNow();
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
+
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 5, 100, TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>(5), Executors.defaultThreadFactory(), new ThreadPoolExecutor.DiscardOldestPolicy());
+
+        for (int i = 0; i < 15; i++) {
+
+            int num = i;
+            executor.execute(() -> {
+                System.out.println("thread " + num + " start");
                 try {
-                    Thread.currentThread().sleep(2000);
+                    TimeUnit.SECONDS.sleep(5);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                while (true){
-                    System.out.println("running");
-                }
-            }
-        });
-        Thread.currentThread().sleep(1000);
+                System.out.println("thread " + num + " end");
+            });
+        }
+
+        System.out.println("end");
 
     }
 }
