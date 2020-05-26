@@ -16,19 +16,31 @@ public class MethodDemo {
         };
 
 
-        Pair<LocalDate> pair = ArrayFlag.minmax(birthdays);
+        Pair<LocalDate> pair = ArrayFlag.minAndMax(birthdays);
         System.out.println(pair.getT1());
         System.out.println(pair.getT2());
+
+        Person[] arr = new Person[]{new Person()};
+        System.out.println(contains(arr, new Pair())); //寻找共同的超类
+    }
+
+    private static <T> boolean contains(T[] arr, T t) {
+        for (T t1 : arr) {
+            if (t1 == t) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 class ArrayFlag{
-    public static <T extends Comparable>Pair<T> minmax(T[] a){
+    public static <T extends Comparable>Pair<T> minAndMax(T[] a){
         T min = a[0];
         T max = a[0];
 
-        for (int i = 0; i < a.length; i++) {
-            if(min.compareTo(a[i])>0) min = a[i];
-            if(max.compareTo(a[i])<0) max = a[i];
+        for (T t : a) {
+            if (min.compareTo(t) > 0) min = t;
+            if (max.compareTo(t) < 0) max = t;
         }
 
         return new Pair<>(min,max);
@@ -38,7 +50,6 @@ class ArrayFlag{
 class Pair<T>{
     T t1;
     T t2;
-
 
     public Pair() {
     }

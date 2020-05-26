@@ -31,7 +31,7 @@ public class GCDemo {
     private static final int ONE_MB = 1024 * 1024;
 
     public static void main(String[] args) {
-        testTenuringThreshold();
+        testAllocation();
     }
 
 
@@ -50,9 +50,9 @@ public class GCDemo {
      */
     public static void testAllocation() {
         byte[] arr1 = new byte[2 * ONE_MB];
-        byte[] arr2 = new byte[1 * ONE_MB];
-        byte[] arr3 = new byte[1 * ONE_MB];
-        byte[] arr4 = new byte[6 * ONE_MB];
+        byte[] arr2 = new byte[2 * ONE_MB];
+        byte[] arr3 = new byte[2 * ONE_MB];
+        byte[] arr4 = new byte[4 * ONE_MB];
     }
 
 

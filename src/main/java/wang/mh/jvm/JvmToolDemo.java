@@ -25,18 +25,38 @@ public class JvmToolDemo {
     private static ExecutorService service = Executors.newFixedThreadPool(5);;
 
     public static void main(String[] args) {
-        JvmToolDemo demo = new JvmToolDemo();
-        Scanner scanner = new Scanner(System.in);
-        for (int i = 0; i < 10; i++) {
-            String line = scanner.nextLine();
-            System.out.println(line);
-            int result = demo.add(i, i + 1);
-            System.out.println(result);
-        }
+        checkCpu();
     }
 
     public int add(int a, int b) {
         return a + b;
+    }
+
+
+    public static void checkCpu() {
+        for (int i = 0; i < 2; i++) {
+            new Thread(() -> {
+                try {
+                    TimeUnit.SECONDS.sleep(1000000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+        new Thread(() -> {
+            int i = 0;
+            while (true) {
+                i++;
+                i--;
+            }
+        }, "busy").start();
+        new Thread(() -> {
+            int i = 0;
+            while (true) {
+                i++;
+                i--;
+            }
+        }, "busy2").start();
     }
 
     public static void testDeadLock() {
@@ -83,7 +103,9 @@ public class JvmToolDemo {
         //死循环
         service.execute(() -> {
             while (true) {
-
+                int i = 0;
+                i++;
+                i--;
             }
         });
 
