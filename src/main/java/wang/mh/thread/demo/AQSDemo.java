@@ -36,12 +36,12 @@ public class AQSDemo {
 
         private Sync sync = new Sync();
 
-        public boolean lock() {
-            return sync.tryAcquire(1);
+        public void lock() {
+             sync.acquire(1);
         }
 
-        public boolean unlock() {
-            return sync.tryRelease(1);
+        public void unlock() {
+             sync.release(1);
         }
 
 
@@ -61,6 +61,7 @@ public class AQSDemo {
                 }
                 return false;
             }
+
 
             @Override
             protected boolean tryRelease(int arg) {
