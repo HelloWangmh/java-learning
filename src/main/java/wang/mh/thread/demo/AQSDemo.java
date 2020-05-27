@@ -3,6 +3,10 @@ package wang.mh.thread.demo;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 
+/**
+ * AQS是一个用来构建锁和同步器的框架，使用AQS能简单且高效地构造出应用广泛的大量的同步器
+ * 只需要继承 AbstractQueuedSynchronizer,重写相应的方法,便可以创建同步组件了
+ */
 public class AQSDemo {
 
 
@@ -30,8 +34,6 @@ public class AQSDemo {
         mutex.unlock();
     }
 
-
-
     static class Mutex {
 
         private Sync sync = new Sync();
@@ -53,6 +55,7 @@ public class AQSDemo {
                 return getState() == 1;
             }
 
+            //当state为0时,获取锁,并通过CAS方式将state更改为1
             @Override
             protected boolean tryAcquire(int arg) {
                 if (compareAndSetState(0, 1)) {
@@ -62,7 +65,7 @@ public class AQSDemo {
                 return false;
             }
 
-
+            //释放锁,将state更改为0
             @Override
             protected boolean tryRelease(int arg) {
                 if (getState() == 0) {
