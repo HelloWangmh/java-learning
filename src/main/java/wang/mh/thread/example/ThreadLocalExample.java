@@ -26,6 +26,7 @@ public class ThreadLocalExample implements Runnable{
         }
 
         threadLocal.set("222");
+        threadLocal.remove();
 
         System.out.println("thread name : " + Thread.currentThread().getName() + ", value : " + threadLocal.get());
     }
