@@ -11,15 +11,22 @@ import java.util.concurrent.locks.LockSupport;
  */
 public class Main {
     public static void main(String[] args) throws Exception{
-        Thread t = Thread.currentThread();
-        t.interrupt();
-        t.interrupt();
-        System.out.println(t.isInterrupted());
-
 
     }
 
+    private static int concert(String s) {
+        int result = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            int num = Character.getNumericValue(c);
+            System.out.println(1 <<(num - 1));
+            result = result + (1 <<(num - 1));
+        }
+        return result;
+    }
+
 }
+
 
 interface Per {
     static void xx() {
