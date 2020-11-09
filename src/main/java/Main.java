@@ -11,7 +11,7 @@ import java.util.concurrent.locks.LockSupport;
  */
 public class Main {
     public static void main(String[] args) throws Exception{
-
+        System.out.println("test");
     }
 
     private static int concert(String s) {
