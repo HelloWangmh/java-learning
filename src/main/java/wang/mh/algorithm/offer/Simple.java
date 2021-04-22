@@ -1,13 +1,17 @@
 package wang.mh.algorithm.offer;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class Simple {
 
 
     public static void main(String[] args) {
 
+    }
+
+    public class ListNode {
+       int val;
+       ListNode next;
+       ListNode(int x) { val = x; }
     }
 
 
@@ -21,5 +25,37 @@ public class Simple {
         //2.原地交换
 
         return -1;
+    }
+
+
+    /**
+     * 请实现一个函数，把字符串 s 中的每个空格替换成"%20"。
+     * @return
+     */
+    public String replaceSpace(String s) {
+        if (s == null || s.isEmpty()) {
+            return s;
+        }
+        char[] arr = new char[s.length() * 3];//只需要创建一个数组就可以解决
+        int size = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == ' ') {
+                arr[size++] = '%';
+                arr[size++] = '2';
+                arr[size++] = '0';
+            } else {
+                arr[size++] = s.charAt(i);
+            }
+        }
+        return new String(arr, 0 , size);
+    }
+
+    /**
+     * 输入一个链表的头节点，从尾到头反过来返回每个节点的值（用数组返回）
+     * @param head
+     * @return
+     */
+    public int[] reversePrint(ListNode head) {
+
     }
 }
